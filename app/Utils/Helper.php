@@ -211,7 +211,7 @@ class Helper
         $str = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode("{$cipher}:{$password}"));
         $add = self::formatHost($server['host']);
         $uri = "ss://{$str}@{$add}:{$server['port']}";
-        if ($server['obfs'] == 'http') {
+        if (isset($server['obfs']) && $server['obfs'] == 'http') {
             $uri .= "?plugin=obfs-local;obfs=http;obfs-host={$server['obfs-host']};path={$server['obfs-path']}";
         } else if ((($server['network'] ?? null) == 'http') && isset($server['network_settings']['Host'])) {
             $path = $server['network_settings']['path'] ?? '/';
