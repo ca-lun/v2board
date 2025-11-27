@@ -254,6 +254,28 @@ class OrderController extends Controller
         if (!$order) {
             abort(500, __('Order does not exist'));
         }
+
+        // [新增] 如果订单未支付，尝试主动查询
+        if ($order->status === 0 && $order->payment_id) {
+            $payment = Payment::find($order->payment_id);
+            if ($payment) {
+                try {
+                    $paymentService = new PaymentService($payment->payment, $payment->id);
+                    // 检查 PaymentService 是否有 query 方法 (如果你加上了步骤A)
+                    if (method_exists($paymentService, 'query')) {
+                        $verify = $paymentService->query($order);
+                        if ($verify) {
+                            $orderService = new OrderService($order);
+                            $orderService->paid($verify['callback_no']);
+                            $order->refresh();
+                        }
+                    }
+                } catch (\Exception $e) {
+                    // 忽略查询错误
+                }
+            }
+        }
+        
         return response([
             'data' => $order->status
         ]);

@@ -64,4 +64,12 @@ class PaymentService
         }
         return $form;
     }
+
+    public function query($order)
+    {
+        if (method_exists($this->payment, 'query')) {
+            return $this->payment->query($order);
+        }
+        return false;
+    }
 }
