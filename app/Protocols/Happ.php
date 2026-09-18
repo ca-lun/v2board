@@ -22,11 +22,15 @@ class Happ
         
         $routingRule = [
             "Name" => "{$appName}",
-            "GlobalProxy" => "false",
-            "RemoteDns" => "",
-            "DomesticDns" => "",
-            "Geoipurl" => "https://v6.gh-proxy.org/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat",
-            "Geositeurl" => "https://v6.gh-proxy.org/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat",
+            "GlobalProxy" => "true",
+            "RemoteDNSType" => "DoH",
+            "RemoteDNSDomain" => "https://cloudflare-dns.com/dns-query",
+            "RemoteDNSIP" => "1.1.1.1",
+            "DomesticDNSType" => "DoU",
+            "DomesticDNSDomain" => "",
+            "DomesticDNSIP" => "8.8.8.8",
+            "Geoipurl" => "https://v4.gh-proxy.org/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat",
+            "Geositeurl" => "https://v4.gh-proxy.org/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat",
             "DnsHosts" => new \stdClass(),
             "DirectSites" => ["geosite:cn"],
             "DirectIp" => ["geoip:cn", "geoip:private"],
@@ -35,7 +39,7 @@ class Happ
             "BlockSites" => [],
             "BlockIp" => [],
             "RouteOrder" => "block-direct-proxy",
-            "DomainStrategy" => "AsIs"
+            "DomainStrategy" => "IPIfNonMatch"
         ];
         
         // 生成 happ:// 路由规则并追加回车换行
